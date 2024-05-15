@@ -1,5 +1,37 @@
 <template>
   <div class="background">
+    <header>
+      <nav>
+        <ul>
+          <li @click="showTodos">Todos</li>
+          <li @click="showPosts">Post</li>
+          <li @click="showPosts">user</li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <div v-if="showTodosSection">
+        <!-- Fitur Todos -->
+        <h2>Fitur Todos</h2>
+        <select v-model="selectedUser">
+          <option v-for="user in users" :key="user.id" :value="user.id">{{ user.name }}</option>
+        </select>
+        <div v-if="selectedUser">
+          <h3>Postingan untuk User: {{ selectedUser }}</h3>
+          <ul>
+            <li v-for="post in posts" :key="post.id" v-if="post.userId === selectedUser">
+              <p><strong>Title:</strong> {{ post.title }}</p>
+              <p><strong>Body:</strong> {{ post.body }}</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div v-else>
+        <!-- Fitur Postingan -->
+        <h2>Fitur Postingan dari User</h2>
+        <p>Gunakan https://jsonplaceholder.typicode.com/ sebagai resource data</p>
+      </div>
+    </main>
     <h1>Annisa Wulandari</h1>
     <h2>Tabel kegiatan</h2>
     <form @submit.prevent="addActivity">
@@ -96,6 +128,37 @@ export default {
       }
     });
 
+    const showTodosSection = ref(false);
+    const users = [
+      { id: 1, name: 'Leanne Graham' },
+      { id: 2, name: 'Ervin Howell' },
+      { id: 3, name: 'Clementine Bauch' },
+      { id: 4, name: 'Patricia Lebsack' },
+      { id: 5, name: 'Chelsey Dietrich' },
+      { id: 6, name: 'Mrs. Dennis Schulist' },
+      { id: 7, name: 'Kurtis Weissnat' },
+      { id: 8, name: 'Nicholas Runolfsdottir V' },
+      { id: 9, name: 'Glenna Reichert' },
+      { id: 10, name: 'Clementina DuBuque' }
+    ];
+    const selectedUser = ref(null);
+    const posts = ref([]);
+
+    function showTodos() {
+      showTodosSection.value = true;
+      if (posts.value.length === 0) {
+        fetch('https://jsonplaceholder.typicode.com/posts')
+          .then(response => response.json())
+          .then(data => {
+            posts.value = data;
+          });
+      }
+    }
+
+    function showPosts() {
+      showTodosSection.value = false;
+    }
+
     return { 
       activities, 
       newActivity, 
@@ -107,7 +170,13 @@ export default {
       filteredActivities,
       toggleCompleted,
       toggleIncomplete,
-      showAll
+      showAll,
+      showTodos,
+      showPosts,
+      showTodosSection,
+      users,
+      selectedUser,
+      posts
     };
   }
 }
@@ -121,8 +190,6 @@ export default {
   min-height: 100vh;
   padding: 20px;
 }
-
-
 
 table {
   width: 100%;

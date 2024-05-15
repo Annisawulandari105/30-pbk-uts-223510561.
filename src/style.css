@@ -71,6 +71,34 @@ button:focus-visible {
   text-align: center;
 }
 
+/* Styling untuk todo, post, dan user */
+.todo {
+  background-color: #f9d342;
+  color: #1a1a1a;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.post {
+  background-color: #4caf50;
+  color: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.user {
+  background-color: #2196f3;
+  color: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+/* Styling tambahan untuk todo, post, dan user */
+/* ... */
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
