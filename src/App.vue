@@ -69,6 +69,9 @@
       </tbody>
     </table>
     <p v-if="feedback">{{ feedback }}</p>
+    <h1>Parent Component</h1>
+    <p>{{ parentMessage }}</p>
+    <ChildComponent :message="parentMessage" @updateMessage="updateMessage" />
   </div>
 </template>
 
@@ -76,6 +79,7 @@
 import { ref, computed } from 'vue';
 
 export default {
+  name: 'App',
   setup() {
     const activities = ref([
       { id: 1, name: 'Membaca', completed: false },
@@ -159,6 +163,12 @@ export default {
       showTodosSection.value = false;
     }
 
+    const parentMessage = ref('Hello from Parent');
+
+    function updateMessage(newMessage) {
+      parentMessage.value = newMessage;
+    }
+
     return { 
       activities, 
       newActivity, 
@@ -176,10 +186,35 @@ export default {
       showTodosSection,
       users,
       selectedUser,
-      posts
+      posts,
+      parentMessage,
+      updateMessage
     };
+  },
+  components: {
+    ChildComponent: {
+      props: ['message'],
+      template: `
+        <div>
+          <h2>Child Component</h2>
+          <p>{{ message }}</p>
+          <input v-model="newMessage" placeholder="Enter new message">
+          <button @click="sendMessage">Update Parent Message</button>
+        </div>
+      `,
+      data() {
+        return {
+          newMessage: ''
+        };
+      },
+      methods: {
+        sendMessage() {
+          this.$emit('updateMessage', this.newMessage);
+        }
+      }
+    }
   }
-}
+};
 </script>
 
 <style>
