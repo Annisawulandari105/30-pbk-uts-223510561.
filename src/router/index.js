@@ -1,23 +1,40 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../pages/Index.vue'
-import Album from '../pages/Album.vue'
+import Home from '../views/Home.vue'
+import Todos from '../views/Todos.vue'
+import Posts from '../views/Posts.vue'
+import Albums from '../views/Albums.vue'
+import AlbumDetail from '../views/AlbumDetail.vue'
 
 const routes = [
   {
     path: '/',
-    name: 'home',
+    name: 'Home',
     component: Home
   },
   {
-    path: '/albums/:albumId',
-    name: 'album',
-    component: Album,
-    props: true
+    path: '/todos',
+    name: 'Todos',
+    component: Todos
+  },
+  {
+    path: '/posts',
+    name: 'Posts',
+    component: Posts
+  },
+  {
+    path: '/albums',
+    name: 'Albums',
+    component: Albums
+  },
+  {
+    path: '/albums/:id',
+    name: 'AlbumDetail',
+    component: AlbumDetail
   }
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(process.env.BASE_URL),
   routes
 })
 
