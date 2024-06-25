@@ -4,8 +4,8 @@
       <nav>
         <ul>
           <li @click="showTodos">Todos</li>
-          <li @click="showPosts">Post</li>
-          <li @click="showPosts">user</li>
+          <li @click="showPosts">Posts</li>
+          <li @click="showUsers">Users</li>
         </ul>
       </nav>
     </header>
@@ -19,7 +19,7 @@
         <div v-if="selectedUser">
           <h3>Postingan untuk User: {{ selectedUser }}</h3>
           <ul>
-            <li v-for="post in posts" :key="post.id" v-if="post.userId === selectedUser">
+            <li v-for="post in filteredPosts" :key="post.id">
               <p><strong>Title:</strong> {{ post.title }}</p>
               <p><strong>Body:</strong> {{ post.body }}</p>
             </li>
@@ -48,8 +48,8 @@
     <table>
       <thead>
         <tr>
-          <th>Hobi</th>
-          <th>Keterangan</th>
+          <th>Kegiatan</th>
+          <th>Status</th>
           <th>Aksi</th>
         </tr>
       </thead>
@@ -163,6 +163,19 @@ export default {
       showTodosSection.value = false;
     }
 
+    function showUsers() {
+      // Fungsi tambahan untuk menampilkan daftar user
+      console.log('Show Users');
+    }
+
+    const filteredPosts = computed(() => {
+      if (selectedUser.value) {
+        return posts.value.filter(post => post.userId === selectedUser.value);
+      } else {
+        return posts.value;
+      }
+    });
+
     const parentMessage = ref('Hello from Parent');
 
     function updateMessage(newMessage) {
@@ -187,6 +200,7 @@ export default {
       users,
       selectedUser,
       posts,
+      filteredPosts,
       parentMessage,
       updateMessage
     };
